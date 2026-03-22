@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPT Digital · Painel Executivo</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#ffffff; --surface:#f4f8fc; --surface2:#e8f0f8; --border:#d0e2f0;
+    --blue-light:#A4CFED; --blue-mid:#3490CE; --blue-dark:#005CA8; --blue-deep:#004077;
+    --gray-light:#BFBFBF; --gray-mid:#7F7F7F; --gray-dark:#4A4A49;
+    --text:#000000; --muted:#4A4A49; --dim:#7F7F7F;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Open Sans',sans-serif; font-size:14px; line-height:1.6; }
+  .wrap { max-width:1300px; margin:0 auto; padding:40px 32px 64px; }
+
+  /* HEADER */
+  header { margin-bottom:40px; padding-bottom:28px; border-bottom:2px solid var(--blue-dark); animation:fadeUp .45s ease both; }
+  .detran-logo { display:block; height:52px; width:auto; margin-bottom:16px; }
+  .badge { display:inline-flex; align-items:center; gap:7px; background:var(--surface2); border:1px solid var(--blue-light); color:var(--blue-dark); font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:5px 14px; border-radius:99px; margin-bottom:14px; }
+  .badge::before { content:''; width:6px; height:6px; background:var(--blue-mid); border-radius:50%; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+  h1 { font-size:clamp(32px,4.5vw,52px); font-weight:800; line-height:1.05; color:var(--blue-deep); letter-spacing:-.02em; }
+  .header-desc { margin-top:10px; color:var(--muted); font-size:14.5px; max-width:640px; line-height:1.6; }
+
+  /* SECTION TITLE */
+  .sec { font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-dark); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+  .sec::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* CONTEXT */
+  .ctx-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:36px; animation:fadeUp .45s .08s ease both; }
+  .ctx-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; overflow:hidden; }
+  .ctx-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+  .ctx-card.why::before { background:var(--blue-deep); }
+  .ctx-card.how::before { background:var(--blue-dark); }
+  .ctx-card.who::before { background:var(--blue-mid); }
+  .ctx-card h3 { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px; }
+  .ctx-card.why h3 { color:var(--blue-deep); } .ctx-card.how h3 { color:var(--blue-dark); } .ctx-card.who h3 { color:var(--blue-mid); }
+  .ctx-card ul { list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .ctx-card ul li { color:var(--muted); font-size:12.5px; padding-left:14px; position:relative; line-height:1.4; }
+  .ctx-card ul li::before { content:'›'; position:absolute; left:0; font-weight:700; }
+  .ctx-card.why ul li::before { color:var(--blue-deep); } .ctx-card.how ul li::before { color:var(--blue-dark); } .ctx-card.who ul li::before { color:var(--blue-mid); }
+  .actor-row { display:flex; flex-wrap:wrap; gap:5px; }
+  .actor { background:var(--surface2); border:1px solid var(--blue-light); color:var(--blue-dark); font-size:10.5px; font-weight:500; padding:3px 8px; border-radius:5px; }
+
+  /* PROJECT CARDS */
+  .proj-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:14px; margin-bottom:36px; animation:fadeUp .45s .15s ease both; }
+  .pcard { background:#fff; border:1px solid var(--border); border-radius:12px; padding:22px; position:relative; overflow:hidden; transition:box-shadow .2s,transform .2s,border-color .2s; }
+  .pcard:hover { border-color:var(--blue-mid); box-shadow:0 4px 18px rgba(0,64,119,.08); transform:translateY(-2px); }
+  .pcard-bar { position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+  .pcard-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:10px; }
+  .pcard-icon { width:36px; height:36px; border-radius:9px; background:var(--surface2); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+  .pstatus { font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+  .s-ativo   { background:#e8f0f8; color:var(--blue-dark); border:1px solid var(--blue-light); }
+  .s-contrat { background:#fef9ec; color:#92660a; border:1px solid #f0d98a; }
+  .s-plan    { background:var(--surface2); color:var(--blue-mid); border:1px solid var(--blue-light); }
+  .s-ok      { background:#edfbf4; color:#1a6b3c; border:1px solid #a3e4c0; }
+  .ptitle { font-size:14px; font-weight:700; color:var(--blue-deep); line-height:1.2; margin-bottom:6px; }
+  .pdesc  { font-size:12px; color:var(--muted); line-height:1.45; margin-bottom:10px; }
+  .presp  { font-size:11px; color:var(--blue-dark); background:var(--surface2); border:1px solid var(--blue-light); border-radius:5px; padding:3px 8px; display:inline-block; margin-bottom:12px; font-weight:600; }
+
+  /* STAGE ACCORDION */
+  .pstages { display:flex; flex-direction:column; gap:3px; margin-bottom:12px; }
+  .stage-item { border-radius:7px; overflow:hidden; border:1px solid transparent; transition:border-color .2s; }
+  .stage-item.has-detail { border-color:var(--border); }
+  .stage-item.has-detail.open { border-color:var(--blue-light); }
+  .stage-trigger {
+    display:flex; align-items:center; gap:8px;
+    width:100%; background:none; border:none;
+    padding:6px 8px; border-radius:7px;
+    cursor:default; text-align:left; font-family:'Open Sans',sans-serif;
+  }
+  .stage-item.has-detail .stage-trigger { cursor:pointer; }
+  .stage-item.has-detail .stage-trigger:hover { background:var(--surface); }
+  .sdot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .slbl { font-size:11.5px; color:var(--muted); flex:1; line-height:1.3; }
+  .sdate { font-size:10.5px; color:var(--dim); white-space:nowrap; }
+  .schevron { font-size:10px; color:var(--blue-light); transition:transform .22s; flex-shrink:0; margin-left:4px; display:none; }
+  .stage-item.has-detail .schevron { display:block; }
+  .stage-item.open .schevron { transform:rotate(180deg); color:var(--blue-mid); }
+
+  .stage-detail {
+    display:none;
+    padding:8px 10px 12px 28px;
+    background:var(--surface);
+    border-top:1px solid var(--border);
+  }
+  .stage-item.open .stage-detail { display:block; }
+
+  .detail-row { margin-bottom:7px; }
+  .detail-row:last-child { margin-bottom:0; }
+  .detail-label { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--blue-mid); margin-bottom:2px; }
+  .detail-val { font-size:11.5px; color:var(--muted); line-height:1.5; }
+  .detail-val.resp { color:var(--blue-dark); font-weight:600; }
+
+  /* footer */
+  .pfoot { display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+  .pperiod { font-size:10.5px; color:var(--dim); }
+  .pperiod b { color:var(--muted); }
+  .plink { font-size:11px; color:var(--blue-mid); font-weight:600; text-decoration:none; }
+  .plink:hover { color:var(--blue-dark); }
+
+  /* CURSOS */
+  .cursos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; margin-bottom:36px; animation:fadeUp .45s .2s ease both; }
+  .curso-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px; transition:box-shadow .2s,transform .2s; position:relative; overflow:hidden; }
+  .curso-card:hover { box-shadow:0 3px 14px rgba(0,64,119,.07); transform:translateY(-2px); }
+  .curso-num { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--blue-mid); margin-bottom:4px; }
+  .curso-title { font-size:13px; font-weight:700; color:var(--blue-deep); line-height:1.2; margin-bottom:6px; }
+  .curso-meta { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px; }
+  .ctag { font-size:10px; padding:2px 7px; border-radius:4px; background:var(--surface2); color:var(--blue-dark); border:1px solid var(--blue-light); font-weight:600; }
+  /* compact stage rows inside curso cards */
+  .cstages { display:flex; flex-direction:column; gap:3px; }
+  .cstage-item { border-radius:5px; overflow:hidden; border:1px solid transparent; transition:border-color .2s; }
+  .cstage-item.has-detail { border-color:var(--border); }
+  .cstage-item.has-detail.open { border-color:var(--blue-light); }
+  .cstage-trigger { display:flex; align-items:center; gap:6px; width:100%; background:none; border:none; padding:3px 5px; border-radius:5px; text-align:left; font-family:'Open Sans',sans-serif; cursor:default; }
+  .cstage-item.has-detail .cstage-trigger { cursor:pointer; }
+  .cstage-item.has-detail .cstage-trigger:hover { background:var(--surface); }
+  .cdot { width:5px; height:5px; border-radius:50%; background:var(--blue-light); flex-shrink:0; }
+  .cslbl { font-size:11px; color:var(--muted); flex:1; line-height:1.3; }
+  .cdate { color:var(--dim); font-size:10px; white-space:nowrap; }
+  .cchevron { font-size:9px; color:var(--blue-light); transition:transform .22s; flex-shrink:0; margin-left:2px; display:none; }
+  .cstage-item.has-detail .cchevron { display:block; }
+  .cstage-item.open .cchevron { transform:rotate(180deg); color:var(--blue-mid); }
+  .cstage-detail { display:none; padding:6px 8px 8px 18px; background:var(--surface); border-top:1px solid var(--border); }
+  .cstage-item.open .cstage-detail { display:block; }
+
+  /* JORNADAS */
+  .jorn-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:36px; animation:fadeUp .45s .25s ease both; }
+  .jcard { background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; overflow:hidden; }
+  .jcard-num { position:absolute; top:10px; right:16px; font-size:38px; font-weight:800; color:var(--blue-deep); opacity:.05; line-height:1; }
+  .jcard-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .jcard-icon { font-size:20px; }
+  .jcard-title { font-size:13.5px; font-weight:700; color:var(--blue-deep); }
+  .jcard-obj { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:10px; }
+  .jcard-steps { display:flex; flex-wrap:wrap; gap:5px; }
+  .jstep { font-size:10.5px; padding:3px 8px; border-radius:5px; border:1px solid var(--border); color:var(--muted); background:var(--surface); }
+
+  /* NEXT STEPS */
+  .next-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:36px; animation:fadeUp .45s .3s ease both; }
+  .ncard { background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; }
+  .ncard h3 { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .ndot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .ncard ul { list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .ncard ul li { font-size:12.5px; color:var(--muted); padding-left:14px; position:relative; line-height:1.4; }
+  .ncard ul li::before { content:'—'; position:absolute; left:0; color:var(--gray-light); font-size:10px; top:3px; }
+
+  /* FOOTER */
+  footer { border-top:1px solid var(--border); padding-top:18px; display:flex; align-items:center; justify-content:space-between; gap:16px; color:var(--dim); font-size:11.5px; animation:fadeUp .45s .35s ease both; }
+  .footer-logo { font-weight:700; font-size:13px; color:var(--blue-dark); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  @media(max-width:900px) { .ctx-grid,.next-grid{grid-template-columns:1fr} .jorn-grid{grid-template-columns:1fr} header{flex-direction:column} }
+  @media(max-width:640px) { .wrap{padding:20px 14px 48px} .proj-grid,.cursos-grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header>
+  <img src="data:image/png;base64,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" alt="Detran-SP" class="detran-logo">
+  <div class="badge">Detran-SP · Diretoria de Segurança Viária · Escola Pública de Trânsito</div>
+  <h1>EPT Digital</h1>
+  <p class="header-desc">Transformação digital da Escola Pública de Trânsito para organizar informações, integrar processos e ampliar a capacidade de gestão, execução e monitoramento das ações educativas.</p>
+</header>
+
+<!-- CONTEXTO -->
+<p class="sec">Contexto estratégico</p>
+<div class="ctx-grid">
+  <div class="ctx-card why">
+    <h3>Por que a EPT Digital</h3>
+    <ul>
+      <li>Processos e informações dispersos</li>
+      <li>Baixa integração entre planejamento, execução e monitoramento</li>
+      <li>Necessidade de ampliar escala, eficiência e inteligência na gestão</li>
+    </ul>
+  </div>
+  <div class="ctx-card how">
+    <h3>Modelo Proposto</h3>
+    <ul>
+      <li>EPT como plataforma integrada de educação</li>
+      <li>Processos mais conectados e rastreáveis</li>
+      <li>Decisão orientada por dados e indicadores</li>
+      <li>Maior capacidade de execução e impacto</li>
+    </ul>
+  </div>
+  <div class="ctx-card who">
+    <h3>Atores Envolvidos</h3>
+    <div class="actor-row">
+      <span class="actor">DSV / EPT</span><span class="actor">EPT/CET</span><span class="actor">EPT/CEC</span>
+      <span class="actor">DAC</span><span class="actor">DTI</span><span class="actor">DFT</span>
+      <span class="actor">DHC</span><span class="actor">PRODESP</span><span class="actor">AEPE</span>
+      <span class="actor">ASCOM</span><span class="actor">AEGE</span><span class="actor">DAL</span><span class="actor">SECOM</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROJETOS -->
+<p class="sec">Projetos pontuais</p>
+<div class="proj-grid">
+
+<!-- ── 1. MARCA ─────────────────────────────────────────────── -->
+<div class="pcard">
+  <div class="pcard-bar" style="background:#004077;"></div>
+  <div class="pcard-top"><div class="pcard-icon">🎨</div><span class="pstatus s-ativo">Em andamento</span></div>
+  <div class="ptitle">Marca e Identidade Visual da EPT Digital</div>
+  <div class="pdesc">Desenvolvimento da identidade institucional da EPT Digital, contemplando conceito de marca, identidade visual e diretrizes de aplicação, alinhadas ao manual de identidade visual do DETRAN-SP e à política pública de educação e segurança viária. A ação visa garantir reconhecimento institucional, padronização da comunicação e fortalecimento do posicionamento da EPT como plataforma de educação digital.</div>
+  <div class="presp">AEPE · ASCOM · EPT</div>
+  <div class="pstages">
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Definição de criação da marca</span>
+        <span class="sdate">28/jan → 15/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE · ASCOM · EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Retrabalho por falta de alinhamento técnico</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Reunião de alinhamento prévio; Aprovação de conceito</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Apresentação e validação da marca com a Presidência</span>
+        <span class="sdate">16 → 25/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE · ASCOM · EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Atraso para a validação</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Apresentação faseada</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Aprovação da Marca e da Identidade Visual da EPT com a SECOM</span>
+        <span class="sdate">28/abr → 31/jun</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">ASCOM · SECOM</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Desalinhamento da proposta visual com as diretrizes institucionais de comunicação.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de reuniões de alinhamento com a SECOM e ajustes da identidade visual conforme orientações institucionais.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Aplicação na documentação e ambientes da EPT</span>
+        <span class="sdate">01 → 19/jun</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE · ASCOM · EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Uso inadequado da identidade visual ou falta de padronização nos materiais.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Definição de padrões de aplicação e revisão dos materiais antes da divulgação.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pfoot"><span class="pperiod"><b>Período:</b> 28 jan → 19 jun 2026</span></div>
+</div>
+
+<!-- ── 2. PORTAL ─────────────────────────────────────────────── -->
+<div class="pcard">
+  <div class="pcard-bar" style="background:#3490CE;"></div>
+  <div class="pcard-top"><div class="pcard-icon">🌐</div><span class="pstatus s-ativo">Em andamento</span></div>
+  <div class="ptitle">Portal do Cidadão DETRAN-SP | Educação</div>
+  <div class="pdesc">Desenvolvimento e publicação da página institucional da Escola Pública de Trânsito no Portal Detran-SP, com o objetivo de centralizar o acesso aos programas, cursos e iniciativas de educação para o trânsito. A página funcionará como porta de entrada para os usuários interessados nas trilhas de aprendizagem, cursos e conteúdos educacionais oferecidos pela EPT, garantindo organização das informações, facilidade de navegação e alinhamento com a comunicação institucional do DETRAN-SP.</div>
+  <div class="presp">EPT · DAC · PRODESP</div>
+  <div class="pstages">
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#3490CE;"></div>
+        <span class="slbl">Revisão da Seção "Educação" do Portal | Modelagem da página |</span>
+        <span class="sdate">agosto/25 → 20/03/2026</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura de navegação pouco intuitiva ou dificuldade de acesso às informações pelo usuário. Modelagem fora do padrão institucional.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Definição de arquitetura da informação adequada e alinhamento com as equipes responsáveis pelo portal.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#3490CE;"></div>
+        <span class="slbl">Revisão da modelagem final</span>
+        <span class="sdate">set/2025 → dez/2026</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Publicação de conteúdo com inconsistências ou desalinhamento com as diretrizes institucionais.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação final com as áreas responsáveis pelo portal e revisão do conteúdo antes da publicação.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#3490CE;"></div>
+        <span class="slbl">Protótipo</span>
+        <span class="sdate">02/fev → 20/mar</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DAC · PRODESP</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Protótipo não refletir corretamente a experiência final do usuário.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação do protótipo com as áreas técnicas e de comunicação antes do início da produção.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Desenvolvimento da página</span>
+        <span class="sdate">fev/2026 → março/2026</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DAC · PRODESP</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Falta de integração entre as áreas envolvidas</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Cronograma validado; Ambiente de homologação</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Etapa de testes / homologação</span>
+        <span class="sdate">março/2026 → abril/2026</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DAC · PRODESP</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Falhas de integração com sistemas ou plataformas externas; Erros de navegação ou links quebrados; Inconsistências de conteúdo ou desalinhamento com diretrizes institucionais; Problemas de responsividade ou desempenho em diferentes dispositivos.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Execução de checklist completo de testes funcionais e técnicos; Testes em múltiplos; Validação conjunta com áreas técnicas; Correção dos erros identificados antes da homologação final.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Publicação da página</span>
+        <span class="sdate">Abril/2026</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DAC · PRODESP · EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Publicação com erros de conteúdo ou falhas de funcionamento.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes finais e revisão completa da página antes da liberação ao público.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pfoot">
+    <span class="pperiod"><b>Período:</b> 2025 → abril/2026</span>
+    <a class="plink" href="https://www.figma.com/proto/ko79N445cxpSf8fXoMFlNA/" target="_blank">↗ Protótipo Figma</a>
+  </div>
+</div>
+
+<!-- ── 3. MOODLE ─────────────────────────────────────────────── -->
+<div class="pcard">
+  <div class="pcard-bar" style="background:#005CA8;"></div>
+  <div class="pcard-top"><div class="pcard-icon">🎓</div><span class="pstatus s-ativo">Em andamento</span></div>
+  <div class="ptitle">Atualização da Plataforma Moodle</div>
+  <div class="pdesc">Processo de modernização da plataforma educacional da EPT por meio da atualização do ambiente baseado no Moodle da versão 3.0 para a versão 5.0. A atualização contempla melhorias significativas em segurança, desempenho, usabilidade, compatibilidade com novos recursos educacionais e suporte a integrações tecnológicas. A iniciativa visa garantir maior estabilidade da plataforma, aprimorar a experiência do usuário e preparar o ambiente para a expansão da oferta de cursos digitais no âmbito da EPT Digital.</div>
+  <div class="presp">EPT · DTI · PRODESP</div>
+  <div class="pstages">
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Atualização da Plataforma</span>
+        <span class="sdate">03 → 09/jan</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Incompatibilidade de plugins, perda de funcionalidades existentes ou falhas na migração de dados. Bloqueio do uso da plataforma.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de backup completo do ambiente, criação de ambiente de homologação para testes prévios, validação dos plugins utilizados e execução da migração em ambiente controlado antes da publicação. Obs: ambiente de homologação aguardando para atualização.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Remodelagem visual da Plataforma Moodle</span>
+        <span class="sdate">nov/25 → fev/26</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SETEF · CET/SOPED</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Falhas técnicas na navegação ou nas interações, atraso na validação das áreas responsáveis.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Execução de testes em ambiente de homologação, definição e aviso prévio dos responsáveis pela homologação.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Revisão da Assessoria Especial de Produtos Estratégicos</span>
+        <span class="sdate">03/fev → a definir</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Não aprovação, Identificação tardia de melhorias necessárias no fluxo de navegação.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Documento executivo com manual do usuario, realização de testes funcionais e revisão detalhada da jornada do usuário antes da apresentação institucional.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Avaliação da identidade visual da página</span>
+        <span class="sdate">A definir</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">ASCOM</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Inadequação da identidade visual às diretrizes institucionais, solicitação de ajustes estruturais na etapa final e impacto no cronograma de atualização da plataforma.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Alinhamento prévio com a ASCOM, aplicação prévia das diretrizes institucionais de comunicação, planejamento de ajustes antes da publicação.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Ajustes prévios à apresentação e validação da Presidência</span>
+        <span class="sdate">A definir</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SETEF · CET/SOPED</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação de falhas operacionais ou inconsistências no fluxo de acesso dos usuários. Retrabalho técnico. Solicitação de alterações estruturais.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Compartilhamento antecipado do ambiente com as áreas envolvidas para coleta de contribuições e identificação de ajustes. Previsão de período técnico para implementação de eventuais correções antes da apresentação à Presidência.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Apresentação e validação da Plataforma à Presidência</span>
+        <span class="sdate">A definir</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">PR</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Retrabalho técnico. Solicitação de alterações estruturais após a apresentação.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Checklist validado, validação prévia com áreas técnicas e institucionais antes da apresentação oficial.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Ajustes finais</span>
+        <span class="sdate">A definir</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Retrabalho técnico ou atraso na disponibilização da plataforma.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Priorização dos ajustes críticos e planejamento das correções com cronograma definido.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Definição de login do usuário</span>
+        <span class="sdate">A definir</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DTI</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Falhas de integração entre portal e plataforma educacional.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Testes de integração entre sistemas, validação técnica com a área de tecnologia e simulação de acessos em ambiente de testes.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Publicação da Plataforma</span>
+        <span class="sdate">A definir</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Interrupção do serviço. Instabilidade inicial da plataforma devido ao aumento de acessos ou ajustes pós-migração.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Migração gradual. Ambiente paralelo. Monitoramento contínuo do ambiente após a publicação, suporte técnico dedicado no período inicial e manutenção de plano de contingência.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pfoot">
+    <span class="pperiod"><b>Status:</b> Revisão institucional em curso</span>
+    <a class="plink" href="https://ead.detran.sp.gov.br/" target="_blank">↗ Plataforma Moodle EAD</a>
+  </div>
+</div>
+
+<!-- ── 4. POWER APP ──────────────────────────────────────────── -->
+<div class="pcard">
+  <div class="pcard-bar" style="background:#004077;"></div>
+  <div class="pcard-top"><div class="pcard-icon">📱</div><span class="pstatus s-ok">Lançado</span></div>
+  <div class="ptitle">Power App – Ações Integradas de Segurança Viária</div>
+  <div class="pdesc">Implantação e lançamento do Power App destinado ao registro, monitoramento e consolidação das ações de fiscalização, educação e engenharia de trânsito, com geração de indicadores e alimentação da BR 2026.</div>
+  <div class="presp">EPT/CET · DFT · DTI · Superintendências</div>
+  <div class="pstages">
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#1a6b3c;"></div>
+        <span class="slbl">Webinário Institucional</span>
+        <span class="sdate">06/jan → 04/mar</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · DFT · DTI · Superintendências</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Possiveis atrasos, instabilidade do sistema, ajustes não mapeados</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Ambiente controlado; registro de erros, mapeamento das etapas</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#1a6b3c;"></div>
+        <span class="slbl">Período de testes operacionais do aplicativo</span>
+        <span class="sdate">04 → 05/mar</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · DFT · DTI</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">falta de dados, gerando inconscistencia para a Br</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Pactuar data limite para preenchimento do forms e nova data para uso exclusivo do app</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#1a6b3c;"></div>
+        <span class="slbl">Alimentação do legado das ações de segurança viária</span>
+        <span class="sdate">06/mar</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · DFT · DTI · Superintendências</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Resistência interna, nomeação dos responsaveis</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Comunicação institucional formal, solicitação da lista de responsaveis pelo planejamento das ações</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#1a6b3c;"></div>
+        <span class="slbl">Lançamento - Início oficial</span>
+        <span class="sdate">12/mar</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · DFT · DTI · Superintendências</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Incompatibilidade de bases</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Mapeamento técnico prévio</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#1a6b3c;"></div>
+        <span class="slbl">Integração com bases para alimentação da BR</span>
+        <span class="sdate">11/mar</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · DFT · AEGE</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Indicadores mal definidos</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Definição prévia de KPIs</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#1a6b3c;"></div>
+        <span class="slbl">Dashboard completo com informações Educação</span>
+        <span class="sdate">12 → 30/mar</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · ASCOM · DFT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Dificuldade de desenvolvimento do dashboard no aplicativo, indefinições de indicadores estratégicos.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento técnico prévio da estrutura do dashboard, validação antecipada dos indicadores estratégicos com as áreas responsáveis.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#1a6b3c;"></div>
+        <span class="slbl">Relatório final</span>
+        <span class="sdate">23 → 30/mar</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · DFT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Inconsistência ou ausência de dados suficientes para análise dos resultados do projeto, dificultando a avaliação dos indicadores definidos e a consolidação das informações no relatório final.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Definição prévia dos indicadores (KPIs) e das fontes de dados, validação das informações com as áreas responsáveis, consolidação dos dados antes da elaboração do relatório e revisão técnica do documento antes da apresentação institucional.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pfoot">
+    <span class="pperiod"><b>Ciclo:</b> jan → mar 2026</span>
+    <a class="plink" href="https://apps.powerapps.com/play/e/default-3a78b0cd-7c8e-4929-83d5-190a6cc01365/a/2eba773d-1c29-49a8-b3f2-95f576bb28b7?tenantId=3a78b0cd-7c8e-4929-83d5-190a6cc01365" target="_blank">↗ Power App</a>
+  </div>
+</div>
+
+<!-- ── 5. MULTICLOUD ─────────────────────────────────────────── -->
+<div class="pcard">
+  <div class="pcard-bar" style="background:#3490CE;"></div>
+  <div class="pcard-top"><div class="pcard-icon">☁️</div><span class="pstatus s-plan">Planejamento</span></div>
+  <div class="ptitle">Migração do Moodle para Multicloud</div>
+  <div class="pdesc">Processo de migração da plataforma educacional Moodle para uma infraestrutura de hospedagem em ambiente multicloud, com o objetivo de garantir maior escalabilidade, disponibilidade, segurança e capacidade de atendimento ao crescimento do número de usuários da EPT Digital. A iniciativa contempla a contratação de empresa especializada para hospedagem da plataforma, suporte técnico contínuo e definição da capacidade de atendimento da plataforma com base no volume estimado de acessos diários.</div>
+  <div class="presp">DSV · EPT · DTI · PRODESP</div>
+  <div class="pstages">
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#3490CE;"></div>
+        <span class="slbl">Definição de empresa contratada para hospedagem na multicloud</span>
+        <span class="sdate">01 → 13/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Indefinição ou demora na escolha da solução de hospedagem. Incompatibilidade técnica entre a infraestrutura escolhida e os requisitos da plataforma.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Alinhamento técnico prévio com a área responsável por infraestrutura, definindo requisitos mínimos de hospedagem antes da seleção da empresa. Análise comparativa das soluções disponíveis/ requisitos.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Contratação de empresa para hospedagem na multicloud</span>
+        <span class="sdate">13 → 24/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · EPT · DAL</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Dependência excessiva do fornecedor ou inadequação da infraestrutura contratada para suportar a demanda de usuários.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Definição clara de requisitos técnicos no processo de contratação, estabelecimento de acordo de nível de serviço (SLA) e acompanhamento periódico da qualidade dos serviços prestados.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Suporte e Manutenção</span>
+        <span class="sdate">27/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">Contratada</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Tempo elevado para atendimento de incidentes ou indisponibilidade da plataforma.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Definição de níveis de atendimento no contrato de suporte, monitoramento contínuo da infraestrutura e canal direto de comunicação para resolução de incidentes críticos.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Definição de volume de usuários dia</span>
+        <span class="sdate">27 → 30/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · DAL</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Subdimensionamento da infraestrutura tecnológica, ocasionando lentidão ou indisponibilidade do sistema em períodos de alta demanda.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de estudo de capacidade baseado em projeção de usuários, definição de margem de crescimento da infraestrutura e utilização de recursos escaláveis do ambiente multicloud.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pfoot"><span class="pperiod"><b>Período:</b> abr 2026</span></div>
+</div>
+
+<!-- ── 6. CONTRATAÇÃO CONTEÚDO ───────────────────────────────── -->
+<div class="pcard">
+  <div class="pcard-bar" style="background:#7F7F7F;"></div>
+  <div class="pcard-top"><div class="pcard-icon">📋</div><span class="pstatus s-contrat">Em contratação</span></div>
+  <div class="ptitle">Contratação para Melhoria, Suporte e Produção de Conteúdo</div>
+  <div class="pdesc">Identificação de empresas prestadoras de serviços já parceiras da Prodesp. Processo de contratação de empresa especializada para apoiar a EPT na melhoria do ambiente educacional baseado no Moodle, contemplando suporte técnico, desenvolvimento de conteúdos educacionais digitais, modelagem pedagógica e apoio na produção de cursos em formato compatível com a plataforma. A iniciativa visa garantir qualidade pedagógica, padronização dos conteúdos e evolução contínua da plataforma educacional.</div>
+  <div class="presp">DTI · DSV · PRODESP · DAL</div>
+  <div class="pstages">
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#7F7F7F;"></div>
+        <span class="slbl">Empresa contratada para criação de conteúdo</span>
+        <span class="sdate">01 → 30/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DTI · DSV · PRODESP · DAL</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdo produzido não atender aos requisitos pedagógicos ou às diretrizes institucionais, prazos elevados.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Definição de níveis de atendimento no contrato de suporte, definição clara das diretrizes pedagógicas, validação prévia dos roteiros e acompanhamento técnico durante o processo de produção.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Análise de propostas e verificação de requisitos</span>
+        <span class="sdate">01 → 13/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Seleção de proposta que não atenda plenamente às necessidades do projeto.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Definição de critérios objetivos de avaliação e análise técnica detalhada das propostas apresentadas.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Preparação de documentos preparatórios (ETP, TR, DFD e Mapa de riscos)</span>
+        <span class="sdate">13 → 24/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Inconsistências ou lacunas nos documentos preparatórios que possam gerar questionamentos ou atrasos no processo.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Revisão técnica dos documentos, utilização de modelos institucionais e validação prévia com as áreas responsáveis pelo processo administrativo.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Parecer</span>
+        <span class="sdate">27/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">CJ</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação de inconformidades que exijam revisão do processo.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Revisão prévia da documentação e alinhamento com as áreas técnicas e jurídicas antes da submissão para parecer.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Encaminhamento para contratação</span>
+        <span class="sdate">27 → 30/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DAL · PR</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Atraso na tramitação do processo administrativo.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Acompanhamento contínuo do processo e articulação com as áreas responsáveis pela tramitação.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Início do contrato</span>
+        <span class="sdate">Após contratação</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT · Contratada</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Atrasos no início das atividades ou desalinhamento entre as partes quanto ao escopo do trabalho.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de reunião inicial de alinhamento, definição clara do cronograma e acompanhamento sistemático da execução contratual.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pfoot"><span class="pperiod"><b>Período:</b> abr 2026</span></div>
+</div>
+
+<!-- ── 7. SOFTWARES ──────────────────────────────────────────── -->
+<div class="pcard">
+  <div class="pcard-bar" style="background:#A4CFED;"></div>
+  <div class="pcard-top"><div class="pcard-icon">💾</div><span class="pstatus s-plan">Planejamento</span></div>
+  <div class="ptitle">Aquisição de Softwares e Aplicações para Produção de Conteúdos</div>
+  <div class="pdesc">Processo de aquisição de softwares e aplicações especializadas para produção de conteúdos educacionais digitais a serem utilizados na plataforma de ensino da EPT. As ferramentas serão utilizadas para desenvolvimento de materiais didáticos, produção de conteúdos interativos, edição audiovisual e preparação de cursos compatíveis com o ambiente Moodle, ampliando a capacidade de produção e padronização dos conteúdos educacionais.</div>
+  <div class="presp">EPT/CET</div>
+  <div class="pstages">
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#3490CE;"></div>
+        <span class="slbl">Preparação de documentos preparatórios (ETP, TR, DFD e Mapa de riscos)</span>
+        <span class="sdate">04 → 13/mai</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Especificação inadequada, pendências documentais. Especificação inadequada dos requisitos técnicos ou inconsistência nos documentos preparatórios.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Checklist documental. Revisão técnica dos documentos, alinhamento com as áreas de tecnologia e pedagógica e utilização de modelos institucionais para elaboração da documentação.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Instrução de processo SEI</span>
+        <span class="sdate">13 → 22/mai</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Inconsistências na documentação ou ausência de documentos obrigatórios no processo.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Utilização de checklist documental e revisão prévia antes da abertura do processo administrativo.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Tramitação do processo SEI</span>
+        <span class="sdate">25/mai</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DAL</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Atrasos na tramitação do processo ou necessidade de complementação de informações.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Acompanhamento contínuo do processo e atendimento rápido às solicitações de complementação documental.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Homologação</span>
+        <span class="sdate">26 → 29/mai</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DAL</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Questionamentos técnicos ou administrativos que possam atrasar a homologação do processo.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Garantir que toda a documentação esteja completa e validada previamente pelas áreas responsáveis, reduzindo riscos de retrabalho ou ajustes durante a fase final do processo.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pfoot"><span class="pperiod"><b>Período:</b> mai 2026</span></div>
+</div>
+
+<!-- ── 8. ESTÚDIO ────────────────────────────────────────────── -->
+<div class="pcard">
+  <div class="pcard-bar" style="background:#005CA8;"></div>
+  <div class="pcard-top"><div class="pcard-icon">🎬</div><span class="pstatus s-ativo">Em andamento</span></div>
+  <div class="ptitle">Montagem de Estúdio</div>
+  <div class="pdesc">Estruturação de estúdio destinado à produção de conteúdos educacionais digitais da EPT, contemplando adequação do espaço físico, instalação de mobiliário e aquisição de equipamentos necessários para gravação de aulas, produção audiovisual e desenvolvimento de materiais educacionais. O estúdio permitirá ampliar a capacidade institucional de produção de cursos e conteúdos para a plataforma de ensino.</div>
+  <div class="presp">AEPE · EPT · ASCOM · DTI</div>
+  <div class="pstages">
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Entrega do espaço reformado com mobiliário</span>
+        <span class="sdate">15/mar → 20/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE · ASCOM · EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Atrasos na conclusão da reforma ou inadequação do espaço para atividades de gravação. compra inadequada</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Acompanhamento do cronograma de obra e validação prévia do espaço quanto às condições acústicas, iluminação e disposição do ambiente.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Especificação dos equipamentos</span>
+        <span class="sdate">15/mar → 20/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE · EPT · DTI</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Definição inadequada das especificações técnicas, resultando em equipamentos incompatíveis com as necessidades de produção.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação técnica das especificações com a área de tecnologia e com profissionais envolvidos na produção de conteúdos audiovisuais.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Alinhamento com DTI</span>
+        <span class="sdate">15/mar → 20/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE · EPT</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Incompatibilidade tecnológica ou limitações de infraestrutura.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de reuniões técnicas com a área responsável e validação das soluções antes da aquisição dos equipamentos.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#005CA8;"></div>
+        <span class="slbl">Aquisição dos materiais não existentes</span>
+        <span class="sdate">15/mar → 20/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE · EPT · ASCOM</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Atrasos no processo de aquisição ou indisponibilidade de fornecedores.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento antecipado da aquisição e acompanhamento do processo administrativo até a entrega dos equipamentos.</div></div>
+      </div>
+    </div>
+
+    <div class="stage-item has-detail">
+      <button class="stage-trigger" onclick="toggleStage(this)">
+        <div class="sdot" style="background:#BFBFBF;"></div>
+        <span class="slbl">Entrega oficial</span>
+        <span class="sdate">20/abr</span>
+        <span class="schevron">▼</span>
+      </button>
+      <div class="stage-detail">
+        <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">AEPE</div></div>
+        <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Atraso na entrega. Problemas de infraestrutura de espaço que compromentam o funcionamento do estúdio.</div></div>
+        <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento antecipado das aquisições e acompanhamento do cronograma de entrega e instalação dos equipamentos. Realização de testes técnicos completos do espaço (acústica, rede, energia e iluminação) antes da entrega oficial.</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pfoot"><span class="pperiod"><b>Entrega:</b> 20 abr 2026</span></div>
+</div>
+
+</div><!-- /proj-grid -->
+
+<!-- CURSOS -->
+<p class="sec">Produção de cursos — prioridades 2026</p>
+<div class="cursos-grid">
+  <div class="curso-card" style="border-top:3px solid #004077;">
+    <div class="curso-num">Especializado</div>
+    <div class="curso-title">Motofretista</div>
+    <div class="curso-meta"><span class="ctag">Cat. A</span><span class="ctag">30h</span><span class="ctag">EPT/CEC · CET</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">12→19/jan</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdo não aderente à legislação vigente ou às diretrizes pedagógicas definidas para os cursos especializados.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação prévia do conteúdo por especialistas técnicos e pedagógicos, além de revisão normativa com base nas resoluções do Contran aplicáveis.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">19/jan→02/fev</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada para ensino a distância ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Aplicação de metodologia de design instrucional, realização de testes de usabilidade e revisão pedagógica antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">02/fev</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Erros na configuração do curso na plataforma ou incompatibilidade de arquivos e recursos educacionais.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes técnicos antes da liberação do curso e validação do funcionamento de todos os recursos educacionais.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Validação</span>
+          <span class="cdate">03→10/fev</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · DSV/EPT</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação tardia de falhas no conteúdo ou no funcionamento do curso.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes completos do curso em ambiente de homologação e validação conjunta entre áreas técnica e pedagógica.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">—</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CEC · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixo alcance da divulgação ou desconhecimento dos cursos pelo público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de comunicação institucional com utilização de diferentes canais de divulgação e alinhamento com a área responsável pela comunicação.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 12/jan → 10/fev</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #005CA8;">
+    <div class="curso-num">Especializado</div>
+    <div class="curso-title">Transporte de Emergência</div>
+    <div class="curso-meta"><span class="ctag">Cat. A–E</span><span class="ctag">50h</span><span class="ctag">EPT/CEC · CET</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">11→20/fev</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdo não aderente à legislação vigente ou às diretrizes pedagógicas definidas para os cursos especializados.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação prévia do conteúdo por especialistas técnicos e pedagógicos, além de revisão normativa com base nas resoluções do Contran aplicáveis.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">20/fev→02/mar</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada para ensino a distância ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Aplicação de metodologia de design instrucional, realização de testes de usabilidade e revisão pedagógica antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">02/mar</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Erros na configuração do curso na plataforma ou incompatibilidade de arquivos e recursos educacionais.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes técnicos antes da liberação do curso e validação do funcionamento de todos os recursos educacionais.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Validação</span>
+          <span class="cdate">02→06/mar</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · DSV/EPT</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação tardia de falhas no conteúdo ou no funcionamento do curso.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes completos do curso em ambiente de homologação e validação conjunta entre áreas técnica e pedagógica.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">—</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CEC · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixo alcance da divulgação ou desconhecimento dos cursos pelo público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de comunicação institucional com utilização de diferentes canais de divulgação e alinhamento com a área responsável pela comunicação.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 11/fev → 06/mar</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #3490CE;">
+    <div class="curso-num">Especializado</div>
+    <div class="curso-title">Transporte Escolar</div>
+    <div class="curso-meta"><span class="ctag">Cat. D e E</span><span class="ctag">50h</span><span class="ctag">EPT/CEC · CET</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">06→13/mar</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdo não aderente à legislação vigente ou às diretrizes pedagógicas definidas para os cursos especializados.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação prévia do conteúdo por especialistas técnicos e pedagógicos, além de revisão normativa com base nas resoluções do Contran aplicáveis.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">13→25/mar</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada para ensino a distância ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Aplicação de metodologia de design instrucional, realização de testes de usabilidade e revisão pedagógica antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">26/mar</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Erros na configuração do curso na plataforma ou incompatibilidade de arquivos e recursos educacionais.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes técnicos antes da liberação do curso e validação do funcionamento de todos os recursos educacionais.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Validação</span>
+          <span class="cdate">26→31/mar</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · DSV/EPT</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação tardia de falhas no conteúdo ou no funcionamento do curso.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes completos do curso em ambiente de homologação e validação conjunta entre áreas técnica e pedagógica.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">—</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CEC · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixo alcance da divulgação ou desconhecimento dos cursos pelo público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de comunicação institucional com utilização de diferentes canais de divulgação e alinhamento com a área responsável pela comunicação.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 06 → 31/mar</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #3490CE;">
+    <div class="curso-num">Especializado</div>
+    <div class="curso-title">Coletivo de Passageiros</div>
+    <div class="curso-meta"><span class="ctag">Cat. D</span><span class="ctag">50h</span><span class="ctag">EPT/CEC · CET</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">01→13/abr</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdo não aderente à legislação vigente ou às diretrizes pedagógicas definidas para os cursos especializados.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação prévia do conteúdo por especialistas técnicos e pedagógicos, além de revisão normativa com base nas resoluções do Contran aplicáveis.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">13→24/abr</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada para ensino a distância ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Aplicação de metodologia de design instrucional, realização de testes de usabilidade e revisão pedagógica antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">27/abr</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Erros na configuração do curso na plataforma ou incompatibilidade de arquivos e recursos educacionais.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes técnicos antes da liberação do curso e validação do funcionamento de todos os recursos educacionais.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Validação</span>
+          <span class="cdate">27→30/abr</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · DSV/EPT</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação tardia de falhas no conteúdo ou no funcionamento do curso.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes completos do curso em ambiente de homologação e validação conjunta entre áreas técnica e pedagógica.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">—</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CEC · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixo alcance da divulgação ou desconhecimento dos cursos pelo público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de comunicação institucional com utilização de diferentes canais de divulgação e alinhamento com a área responsável pela comunicação.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 01 → 30/abr</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #A4CFED;">
+    <div class="curso-num">Especializado</div>
+    <div class="curso-title">Mototáxi</div>
+    <div class="curso-meta"><span class="ctag">Cat. A</span><span class="ctag">30h</span><span class="ctag">EPT/CEC · CET</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">01→13/abr</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdo não aderente à legislação vigente ou às diretrizes pedagógicas definidas para os cursos especializados.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação prévia do conteúdo por especialistas técnicos e pedagógicos, além de revisão normativa com base nas resoluções do Contran aplicáveis.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">13→24/abr</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada para ensino a distância ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Aplicação de metodologia de design instrucional, realização de testes de usabilidade e revisão pedagógica antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">27/abr</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Erros na configuração do curso na plataforma ou incompatibilidade de arquivos e recursos educacionais.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes técnicos antes da liberação do curso e validação do funcionamento de todos os recursos educacionais.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Validação</span>
+          <span class="cdate">27→30/abr</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · DSV/EPT</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação tardia de falhas no conteúdo ou no funcionamento do curso.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes completos do curso em ambiente de homologação e validação conjunta entre áreas técnica e pedagógica.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">—</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CEC · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixo alcance da divulgação ou desconhecimento dos cursos pelo público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de comunicação institucional com utilização de diferentes canais de divulgação e alinhamento com a área responsável pela comunicação.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 01 → 30/abr</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #004077;">
+    <div class="curso-num">Especializado</div>
+    <div class="curso-title">MOPP (Movimentação Operacional de Produtos Perigosos) </div>
+    <div class="curso-meta"><span class="ctag">Todas cats.</span><span class="ctag">50h</span><span class="ctag">EPT/CEC · CET</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">04→13/mai</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdo não aderente à legislação vigente ou às diretrizes pedagógicas definidas para os cursos especializados.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação prévia do conteúdo por especialistas técnicos e pedagógicos, além de revisão normativa com base nas resoluções do Contran aplicáveis.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">13→22/mai</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada para ensino a distância ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Aplicação de metodologia de design instrucional, realização de testes de usabilidade e revisão pedagógica antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">25/mai</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Erros na configuração do curso na plataforma ou incompatibilidade de arquivos e recursos educacionais.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes técnicos antes da liberação do curso e validação do funcionamento de todos os recursos educacionais.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Validação</span>
+          <span class="cdate">26→29/mai</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · DSV/EPT</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação tardia de falhas no conteúdo ou no funcionamento do curso.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes completos do curso em ambiente de homologação e validação conjunta entre áreas técnica e pedagógica.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">—</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CEC · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixo alcance da divulgação ou desconhecimento dos cursos pelo público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de comunicação institucional com utilização de diferentes canais de divulgação e alinhamento com a área responsável pela comunicação.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 04 → 29/mai</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #005CA8;">
+    <div class="curso-num">Especializado</div>
+    <div class="curso-title">Carga Indivisível</div>
+    <div class="curso-meta"><span class="ctag">Cat. C, D e E</span><span class="ctag">50h</span><span class="ctag">EPT/CEC · CET</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">01→19/jun</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdo não aderente à legislação vigente ou às diretrizes pedagógicas definidas para os cursos especializados.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação prévia do conteúdo por especialistas técnicos e pedagógicos, além de revisão normativa com base nas resoluções do Contran aplicáveis.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">22/jun→03/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada para ensino a distância ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Aplicação de metodologia de design instrucional, realização de testes de usabilidade e revisão pedagógica antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">22/jun→03/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Erros na configuração do curso na plataforma ou incompatibilidade de arquivos e recursos educacionais.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes técnicos antes da liberação do curso e validação do funcionamento de todos os recursos educacionais.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Validação</span>
+          <span class="cdate">03→10/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · DSV/EPT</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Identificação tardia de falhas no conteúdo ou no funcionamento do curso.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de testes completos do curso em ambiente de homologação e validação conjunta entre áreas técnica e pedagógica.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">—</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CEC · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixo alcance da divulgação ou desconhecimento dos cursos pelo público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de comunicação institucional com utilização de diferentes canais de divulgação e alinhamento com a área responsável pela comunicação.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 01/jun → 10/jul</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #3490CE;">
+    <div class="curso-num">Curso Servidores</div>
+    <div class="curso-title">Agente da Autoridade de Trânsito</div>
+    <div class="curso-meta"><span class="ctag">DSV/EPT</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">01→19/jun</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdos pouco atrativos ou desalinhados com o público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento pedagógico adequado e revisão técnica do material antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">22/jun→03/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação da modelagem educacional e testes de usabilidade antes da disponibilização do curso.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Validação</span>
+          <span class="cdate">22/jun→03/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV · DSV/EPT · EPT/CEC</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Aprovação de conteúdos com inconsistências técnicas ou pedagógicas. Especialista tecnico para validação</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Realização de validação por equipe técnica especializada e registro formal da aprovação antes do embarque na plataforma.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">03→10/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Falhas técnicas no carregamento dos conteúdos ou problemas de visualização pelos usuários.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Testes técnicos na plataforma e validação completa do curso antes da publicação. Parcerias e convênios com especialistas relacionados ao tema</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">—</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixa visibilidade da iniciativa e reduzido número de participantes.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de divulgação institucional e utilização de canais digitais, redes sociais e parcerias institucionais para ampliar o alcance do curso.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 01/jun → 10/jul</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #A4CFED;">
+    <div class="curso-num">Cidadão</div>
+    <div class="curso-title">Segurança Viária — Público Geral</div>
+    <div class="curso-meta"><span class="ctag">Público geral</span><span class="ctag">DSV/EPT · CEC</span></div>
+    <div class="cstages">
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">01→19/jun</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Conteúdos pouco atrativos ou desalinhados com o público-alvo.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento pedagógico adequado e revisão técnica do material antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">22/jun→03/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Estrutura pedagógica inadequada ou dificuldade de navegação pelo aluno.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Validação da modelagem educacional e testes de usabilidade antes da disponibilização do curso.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">22/jun→03/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">EPT/CET · CET/SDMP · EPT/CEC · CEC/SDCG · CEC/SDCE</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Falhas técnicas no carregamento dos conteúdos ou problemas de visualização pelos usuários.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Testes técnicos na plataforma e validação completa do curso antes da publicação.</div></div>
+        </div>
+      </div>
+      <div class="cstage-item has-detail">
+        <button class="cstage-trigger" onclick="toggleCstage(this)">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">03→10/jul</span>
+          <span class="cchevron">▼</span>
+        </button>
+        <div class="cstage-detail">
+          <div class="detail-row"><div class="detail-label">Responsável</div><div class="detail-val resp">DSV/EPT · EPT/CET · ASCOM</div></div>
+          <div class="detail-row"><div class="detail-label">Risco</div><div class="detail-val">Baixa visibilidade da iniciativa e reduzido número de participantes.</div></div>
+          <div class="detail-row"><div class="detail-label">Mitigação</div><div class="detail-val">Planejamento de divulgação institucional e utilização de canais digitais, redes sociais e parcerias institucionais para ampliar o alcance do curso.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 01/jun → 10/jul</div>
+  </div>  <div class="curso-card" style="border-top:3px solid #7F7F7F;">
+    <div class="curso-num">Reciclagem</div>
+    <div class="curso-title">Reciclagem — Condutor Infrator</div>
+    <div class="curso-meta"><span class="ctag">Condutores infratores</span><span class="ctag">Formato síncrono</span></div>
+    <div class="cstages">
+      <div class="cstage-item">
+        <button class="cstage-trigger">
+          <div class="cdot" style="background:#3490CE;"></div>
+          <span class="cslbl">Produção conteúdos</span>
+          <span class="cdate">01→13/abr</span>
+          
+        </button>
+      </div>
+      <div class="cstage-item">
+        <button class="cstage-trigger">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Modelagem conteúdo</span>
+          <span class="cdate">13→24/abr</span>
+          
+        </button>
+      </div>
+      <div class="cstage-item">
+        <button class="cstage-trigger">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Embarque plataforma</span>
+          <span class="cdate">27/abr</span>
+          
+        </button>
+      </div>
+      <div class="cstage-item">
+        <button class="cstage-trigger">
+          <div class="cdot" style="background:#BFBFBF;"></div>
+          <span class="cslbl">Divulgação</span>
+          <span class="cdate">27→30/abr</span>
+          
+        </button>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);"><b style="color:var(--muted);">Período:</b> 01 → 30/abr</div>
+  </div>
+</div>
+
+<!-- JORNADAS -->
+<p class="sec">Jornadas de aprendizagem</p>
+<div class="jorn-grid">
+  <div class="jcard" style="border-top:3px solid #004077;"><div class="jcard-num">01</div><div class="jcard-header"><span class="jcard-icon">👤</span><span class="jcard-title">Jornada do Cidadão — Generalizado</span></div><div class="jcard-obj">Garantir que o cidadão acesse, realize e conclua cursos da EPT Digital de forma simples, segura e integrada aos sistemas do DETRAN-SP, com rastreabilidade das certificações.</div><div class="jcard-steps"><span class="jstep">Portal do Cidadão (DAC)</span><span class="jstep">Login Gov.br / Plataforma (DTI)</span><span class="jstep">Acesso à Plataforma</span><span class="jstep">Realização do curso</span><span class="jstep">Certificação digital</span></div></div>
+  <div class="jcard" style="border-top:3px solid #005CA8;"><div class="jcard-num">02</div><div class="jcard-header"><span class="jcard-icon">🚛</span><span class="jcard-title">Jornada do Motorista Profissional</span></div><div class="jcard-obj">Fluxo digital integrado para cursos especializados, com validação do prontuário via API RENACH, registro obrigatório, certificação e avaliações. Prazo integração: 18/mar.</div><div class="jcard-steps"><span class="jstep">Portal do Cidadão (DAC)</span><span class="jstep">Validação prontuário — API RENACH (DTI)</span><span class="jstep">Acesso à Plataforma (DTI)</span><span class="jstep">Realização do curso</span><span class="jstep">Certificação de saída</span><span class="jstep">Evento RENACH (DTI · 18/mar)</span><span class="jstep">Abertura de taxa (DTI · 18/mar)</span><span class="jstep">Agendamento de prova (DTI · 18/mar)</span><span class="jstep">Prova + Evento exame</span></div></div>
+  <div class="jcard" style="border-top:3px solid #3490CE;"><div class="jcard-num">03</div><div class="jcard-header"><span class="jcard-icon">⚠️</span><span class="jcard-title">Jornada Condutor Infrator — Reciclagem</span></div><div class="jcard-obj">Processo rastreável para condutores que precisam cumprir a reciclagem prevista em lei, com validação no prontuário, certificação e registro no RENACH. Prazo: 31/mar.</div><div class="jcard-steps"><span class="jstep">Portal Cidadão — Carta Serviço (DAC)</span><span class="jstep">Validação prontuário — RPA (DTI)</span><span class="jstep">Acesso Plataforma — Plug Moodle (DTI)</span><span class="jstep">Curso de reciclagem</span><span class="jstep">Certificação saída (Plug Moodle)</span><span class="jstep">Evento RENACH</span><span class="jstep">Taxa (DHC · serviço existente)</span><span class="jstep">Agendamento Poupatempo (DHC)</span><span class="jstep">Prova + Evento exame (PRODESP)</span></div></div>
+  <div class="jcard" style="border-top:3px solid #A4CFED;"><div class="jcard-num">04</div><div class="jcard-header"><span class="jcard-icon">🏛️</span><span class="jcard-title">Jornada Servidor</span></div><div class="jcard-obj">Capacitação contínua dos servidores do DETRAN-SP com trilhas formativas, acompanhamento de progresso, certificação e envio automático para CGGP e BR 2026.</div><div class="jcard-steps"><span class="jstep">Definição de cursos obrigatórios</span><span class="jstep">Acesso à Plataforma</span><span class="jstep">Login Gov.br / Institucional</span><span class="jstep">Trilhas obrigatórias</span><span class="jstep">Realização dos cursos</span><span class="jstep">Avaliação</span><span class="jstep">Certificação de saída</span><span class="jstep">Envio automático ao CGGP</span><span class="jstep">Alimentação BR 2026</span></div></div>
+</div>
+
+<!-- PRÓXIMOS PASSOS -->
+<p class="sec">Próximos passos</p>
+<div class="next-grid">
+  <div class="ncard"><h3><div class="ndot" style="background:#004077;"></div><span style="color:#004077;">Curto prazo</span></h3><ul><li>Publicação da seção Educação no Portal do Detran</li><li>Finalização da homologação da plataforma Moodle</li><li>Cursos Motofretista, Emergência e Escolar embarcados</li><li>Lançamento do Power App e integração com BR 2026</li></ul></div>
+  <div class="ncard"><h3><div class="ndot" style="background:#3490CE;"></div><span style="color:#3490CE;">Médio prazo</span></h3><ul><li>Branding e identidade visual da EPT Digital aprovados</li><li>Entrega oficial do Estúdio de Produção</li><li>Contratação de empresa para conteúdo e suporte Moodle</li><li>Automação em processos de matrícula e certificação</li></ul></div>
+  <div class="ncard"><h3><div class="ndot" style="background:#A4CFED;"></div><span style="color:#005CA8;">Longo prazo</span></h3><ul><li>Escalabilidade via multicloud</li><li>Universidade corporativa para servidores do DETRAN-SP</li><li>Decisão orientada por dados e indicadores estratégicos</li><li>Expansão do catálogo de cursos para novos públicos</li></ul></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <img src="data:image/png;base64,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" alt="Detran-SP" style="height:32px; width:auto; opacity:.65;">
+  <span>Diretoria de Segurança Viária · Escola Pública de Trânsito</span>
+  <span>Painel executivo — 2025 / 2026</span>
+</footer>
+
+</div>
+<script>
+  function toggleStage(btn) {
+    const item = btn.closest('.stage-item');
+    const isOpen = item.classList.contains('open');
+    item.closest('.pstages').querySelectorAll('.stage-item').forEach(s => s.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+  function toggleCstage(btn) {
+    const item = btn.closest('.cstage-item');
+    const isOpen = item.classList.contains('open');
+    item.closest('.cstages').querySelectorAll('.cstage-item').forEach(s => s.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>
