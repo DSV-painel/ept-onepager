@@ -14,7 +14,7 @@
     --text:#000000; --muted:#4A4A49; --dim:#7F7F7F;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:'Open Sans',sans-serif; font-size:14px; line-height:1.6; }
+  body { background:var(--bg); color:var(--text); font-family:'Open Sans',sans-serif; font-size:16px; line-height:1.6; }
   .wrap { max-width:1300px; margin:0 auto; padding:40px 32px 64px; }
 
   /* HEADER */
@@ -58,8 +58,8 @@
   .s-contrat { background:#fef9ec; color:#92660a; border:1px solid #f0d98a; }
   .s-plan    { background:var(--surface2); color:var(--blue-mid); border:1px solid var(--blue-light); }
   .s-ok      { background:#edfbf4; color:#1a6b3c; border:1px solid #a3e4c0; }
-  .ptitle { font-size:14px; font-weight:700; color:var(--blue-deep); line-height:1.2; margin-bottom:6px; }
-  .pdesc  { font-size:12px; color:var(--muted); line-height:1.45; margin-bottom:10px; }
+  .ptitle { font-size:16px; font-weight:700; color:var(--blue-deep); line-height:1.2; margin-bottom:6px; }
+  .pdesc  { font-size:14px; color:var(--muted); line-height:1.45; margin-bottom:10px; }
   .presp  { font-size:11px; color:var(--blue-dark); background:var(--surface2); border:1px solid var(--blue-light); border-radius:5px; padding:3px 8px; display:inline-block; margin-bottom:12px; font-weight:600; }
 
   /* STAGE ACCORDION */
@@ -108,7 +108,7 @@
   .curso-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px; transition:box-shadow .2s,transform .2s; position:relative; overflow:hidden; }
   .curso-card:hover { box-shadow:0 3px 14px rgba(0,64,119,.07); transform:translateY(-2px); }
   .curso-num { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--blue-mid); margin-bottom:4px; }
-  .curso-title { font-size:13px; font-weight:700; color:var(--blue-deep); line-height:1.2; margin-bottom:6px; }
+  .curso-title { font-size:15px; font-weight:700; color:var(--blue-deep); line-height:1.2; margin-bottom:6px; }
   .curso-meta { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px; }
   .ctag { font-size:10px; padding:2px 7px; border-radius:4px; background:var(--surface2); color:var(--blue-dark); border:1px solid var(--blue-light); font-weight:600; }
   /* compact stage rows inside curso cards */
@@ -135,7 +135,7 @@
   .jcard-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
   .jcard-icon { font-size:20px; }
   .jcard-title { font-size:13.5px; font-weight:700; color:var(--blue-deep); }
-  .jcard-obj { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:16px; padding:10px 12px; background:var(--surface); border-radius:8px; border-left:3px solid var(--blue-light); }
+  .jcard-obj { font-size:14px; color:var(--muted); line-height:1.5; margin-bottom:16px; padding:10px 12px; background:var(--surface); border-radius:8px; border-left:3px solid var(--blue-light); }
   /* flow steps */
   .jflow { display:flex; flex-direction:column; gap:0; }
   .jflow-item { position:relative; }
@@ -162,7 +162,7 @@
     color:var(--dim); transition:all .2s; z-index:1;
   }
   .jflow-item.open .jflow-dot { border-color:var(--blue-mid); background:var(--blue-mid); color:#fff; }
-  .jflow-label { font-size:12px; color:var(--muted); flex:1; line-height:1.3; font-weight:500; }
+  .jflow-label { font-size:14px; color:var(--muted); flex:1; line-height:1.3; font-weight:500; }
   .jflow-item.open .jflow-label { color:var(--blue-deep); font-weight:600; }
   .jflow-chevron { font-size:9px; color:var(--blue-light); transition:transform .22s; flex-shrink:0; }
   .jflow-item.open .jflow-chevron { transform:rotate(180deg); color:var(--blue-mid); }
@@ -187,7 +187,7 @@
 
   /* FOOTER */
   footer { border-top:1px solid var(--border); padding-top:18px; display:flex; align-items:center; justify-content:space-between; gap:16px; color:var(--dim); font-size:11.5px; animation:fadeUp .45s .35s ease both; }
-  .footer-logo { font-weight:700; font-size:13px; color:var(--blue-dark); }
+  .footer-logo { font-weight:700; font-size:15px; color:var(--blue-dark); }
 
   @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
 
@@ -262,7 +262,7 @@
     .detran-logo { height:32px; margin-bottom:12px; }
     .badge { font-size:9.5px; padding:4px 10px; }
     h1 { font-size:clamp(24px,7vw,34px); }
-    .header-desc { font-size:13px; max-width:100%; }
+    .header-desc { font-size:15px; max-width:100%; }
 
     /* section titles */
     .sec { font-size:9.5px; }
@@ -272,7 +272,7 @@
 
     /* project cards */
     .pcard { padding:18px; }
-    .ptitle { font-size:13px; }
+    .ptitle { font-size:15px; }
     .pdesc  { font-size:11.5px; }
     .pcard-top { flex-wrap:wrap; gap:8px; }
 
@@ -449,13 +449,13 @@
 <div class="stage-item">
 <div class="stage-trigger">
 <div class="sdot" style="background:#005CA8;"></div>
-<span class="slbl">Migração do Moodle para Google/Multicloud</span>
+<span class="slbl">Migração do Moodle para Google/Multicloud ✅</span>
 </div>
 </div>
 <div class="stage-item">
 <div class="stage-trigger">
 <div class="sdot" style="background:#005CA8;"></div>
-<span class="slbl">Atualização da versão para 5.0</span>
+<span class="slbl">Atualização da versão para 5.0 ✅</span>
 </div>
 </div>
 <div class="stage-item">
@@ -1538,9 +1538,9 @@
 <!-- PRÓXIMOS PASSOS -->
 <p class="sec">Próximos passos</p>
 <div class="next-grid">
-<div class="ncard"><h3><div class="ndot" style="background:#004077;"></div><span style="color:#004077;">Curto prazo</span></h3><ul><li>Publicação da seção Educação no Portal do Detran</li><li>Cursos prioritários embarcados e disponibilizados</li><li>Branding e identidade visual da EPT Digital aprovados</li></ul></div>
-<div class="ncard"><h3><div class="ndot" style="background:#3490CE;"></div><span style="color:#3490CE;">Médio prazo</span></h3><ul><li>Entrega oficial do Estúdio de Produção</li><li>Aquisição de softwares e aplicações para produção de conteúdos</li><li>Automação em processos de matrícula e certificação</li></ul></div>
-<div class="ncard"><h3><div class="ndot" style="background:#A4CFED;"></div><span style="color:#005CA8;">Longo prazo</span></h3><ul><li>Plataforma digital escalável e integrado com as necessidades da EPT, com capacidade de expansão</li><li>Universidade corporativa para servidores do DETRAN-SP</li><li>Expansão do catálogo de cursos para novos públicos</li></ul></div>
+<div class="ncard"><h3><div class="ndot" style="background:#004077;"></div><span style="color:#004077;">Curto prazo</span></h3><ul><li>Publicação da seção Educação no Portal do Detran</li><li>Finalização da homologação da plataforma Moodle</li><li>Cursos prioritários embarcados</li><li>Lançamento do Power App e integração com BR 2026</li></ul></div>
+<div class="ncard"><h3><div class="ndot" style="background:#3490CE;"></div><span style="color:#3490CE;">Médio prazo</span></h3><ul><li>Branding e identidade visual da EPT Digital aprovados</li><li>Entrega oficial do Estúdio de Produção</li><li>Aquisição de softwares e aplicações para produção de conteúdos</li><li>Automação em processos de matrícula e certificação</li></ul></div>
+<div class="ncard"><h3><div class="ndot" style="background:#A4CFED;"></div><span style="color:#005CA8;">Longo prazo</span></h3><ul><li>Escalabilidade via multicloud</li><li>Contratação de empresa para conteúdo e suporte Moodle</li><li>Universidade corporativa para servidores do DETRAN-SP</li><li>Decisão orientada por dados e indicadores estratégicos</li><li>Expansão do catálogo de cursos para novos públicos</li></ul></div>
 </div>
 <!-- FOOTER -->
 <footer>
